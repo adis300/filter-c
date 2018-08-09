@@ -17,7 +17,6 @@ extern "C"{
 #define PRECISION double
 
 typedef struct {
-    int order;
     int n;
 	double *A;
     double *d1;
@@ -30,14 +29,6 @@ typedef BWLowPass BWHighPass;
 
 typedef struct {
     int n;
-    double s;
-    double f1;
-    double f2;
-    double a;
-    double a2;
-    double b;
-    double b2;
-    double r;
 	double *A;
     double *d1;
     double *d2;
@@ -49,12 +40,26 @@ typedef struct {
     double *w3;
     double *w4;
 } BWBandPass;
-typedef BWBandPass BWBandStop;
+typedef struct {
+    int n;
+    double r;
+    double s;
+	double *A;
+    double *d1;
+    double *d2;
+    double *d3;
+    double *d4;
+    double *w0;
+    double *w1;
+    double *w2;
+    double *w3;
+    double *w4;
+} BWBandStop;
 
-BWLowPass* create_bw_low_pass_filter(int order, double sampling_frequency, int half_power_frequency);
-BWHighPass* create_bw_high_pass_filter(int order, double sampling_frequency, int half_power_frequency);
-BWBandPass* create_bw_band_pass_filter(int order, double sampling_frequency, int half_power_frequency1, int half_power_frequency2);
-BWBandStop* create_bw_band_stop_filter(int order, double sampling_frequency, int half_power_frequency1, int half_power_frequency2);
+BWLowPass* create_bw_low_pass_filter(int order, double sampling_frequency, double half_power_frequency);
+BWHighPass* create_bw_high_pass_filter(int order, double sampling_frequency, double half_power_frequency);
+BWBandPass* create_bw_band_pass_filter(int order, double sampling_frequency, double half_power_frequency1, double half_power_frequency2);
+BWBandStop* create_bw_band_stop_filter(int order, double sampling_frequency, double half_power_frequency1, double half_power_frequency2);
 
 void free_bw_low_pass(BWLowPass* filter);
 void free_bw_high_pass(BWHighPass* filter);

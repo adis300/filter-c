@@ -1,3 +1,12 @@
+/*
+ * filter.c
+ *
+ * Copyright (c) 2018 Disi A
+ * 
+ * Author: Disi A
+ * Email: adis@live.cn
+ *  https://www.mathworks.com/matlabcentral/profile/authors/3734620-disi-a
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

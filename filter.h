@@ -1,3 +1,12 @@
+/*
+ * filter.h
+ *
+ * Copyright (c) 2018 Disi A
+ * 
+ * Author: Disi A
+ * Email: adis@live.cn
+ *  https://www.mathworks.com/matlabcentral/profile/authors/3734620-disi-a
+ */
 #ifndef filter_h
 #define filter_h
 

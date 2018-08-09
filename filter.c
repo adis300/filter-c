@@ -14,6 +14,10 @@
 #include "filter.h"
 
 BWLowPass* create_bw_low_pass_filter(int order, double s, double f) {
+    if(order % 2){
+        printf("create_bw_low_pass_filter:Order must be 2,4,6,8,...\n");
+        return NULL;
+    }
     BWLowPass* filter = (BWLowPass *) malloc(sizeof(BWLowPass));
     filter -> n = order/2;
     filter -> A = (double *)malloc(filter -> n*sizeof(double));
@@ -39,6 +43,10 @@ BWLowPass* create_bw_low_pass_filter(int order, double s, double f) {
     return filter;
 }
 BWHighPass* create_bw_high_pass_filter(int order, double s, double f){
+    if(order % 2){
+        printf("create_bw_high_pass_filter:Order must be 2,4,6,8,...\n");
+        return NULL;
+    }
     BWHighPass* filter = (BWHighPass *) malloc(sizeof(BWHighPass));
     filter -> n = order/2;
     filter -> A = (double *)malloc(filter -> n*sizeof(double));
@@ -64,6 +72,10 @@ BWHighPass* create_bw_high_pass_filter(int order, double s, double f){
     return filter;
 }
 BWBandPass* create_bw_band_pass_filter(int order, double s, double f1, double f2){
+    if(order % 4){
+        printf("create_bw_band_stop_filter:Order must be 4,8,12,16,...\n");
+        return NULL;
+    }
     BWBandPass* filter = (BWBandPass *) malloc(sizeof(BWBandPass));
     filter -> n = order/4;
     filter -> A = (double *)malloc(filter -> n*sizeof(double));
@@ -97,6 +109,10 @@ BWBandPass* create_bw_band_pass_filter(int order, double s, double f1, double f2
     return filter;
 }
 BWBandStop* create_bw_band_stop_filter(int order, double s, double f1, double f2){
+    if(order % 4){
+        printf("create_bw_band_stop_filter:Order must be 4,8,12,16,...\n");
+        return NULL;
+    }
     BWBandStop* filter = (BWBandStop *) malloc(sizeof(BWBandStop));
     filter -> n = order/4;
     filter -> A = (double *)malloc(filter -> n*sizeof(double));
@@ -223,6 +239,10 @@ double bw_band_stop(BWBandStop* filter, double x){
 }
 
 CHELowPass* create_che_low_pass_filter(int n, double ep, double s, double f){
+    if(n % 2){
+        printf("create_che_low_pass_filter:Order must be 2,4,6,8,...\n");
+        return NULL;
+    }
     CHELowPass* filter = (CHELowPass *) malloc(sizeof(CHELowPass));
     filter -> m = n/2;
     filter -> ep = 2.0/ep;
@@ -253,6 +273,10 @@ CHELowPass* create_che_low_pass_filter(int n, double ep, double s, double f){
     return filter;
 }
 CHEHighPass* create_che_high_pass_filter(int n, double ep, double s, double f){
+    if(n % 2){
+        printf("create_che_high_pass_filter:Order must be 2,4,6,8,...\n");
+        return NULL;
+    }
     CHEHighPass* filter = (CHEHighPass *) malloc(sizeof(CHEHighPass));
     filter -> m = n/2;
     filter -> ep = 2.0/ep; // Used to normalize
@@ -283,6 +307,10 @@ CHEHighPass* create_che_high_pass_filter(int n, double ep, double s, double f){
     return filter;
 }
 CHEBandPass* create_che_band_pass_filter(int n, double ep, double s, double f1, double f2){
+    if(n % 4){
+        printf("create_che_band_pass_filter:Order must be 4,8,12,16,...\n");
+        return NULL;
+    }
     CHEBandPass* filter = (CHEBandPass *) malloc(sizeof(CHEBandPass));
     filter -> m = n/4;
     filter -> ep = 2.0/ep;
@@ -321,6 +349,10 @@ CHEBandPass* create_che_band_pass_filter(int n, double ep, double s, double f1, 
     return filter;
 }
 CHEBandStop* create_che_band_stop_filter(int n, double ep, double s, double f1, double f2){
+    if(n % 4){
+        printf("create_che_band_stop_filter:Order must be 4,8,12,16,...\n");
+        return NULL;
+    }
     CHEBandStop* filter = (CHEBandStop *) malloc(sizeof(CHEBandStop));
     filter -> m = n/4;
     filter -> ep = 2.0/ep;

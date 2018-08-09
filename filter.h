@@ -101,6 +101,12 @@ typedef struct {
     double *w4;
 } CHEBandStop;
 
+/**
+ * create_bw_low_pass_filter
+ * order(double): filter order
+ * sampling_frequency(double): Sampling frequency
+ * half_power_frequency(double): Half-power frequency or cutoff frequency
+ */
 BWLowPass* create_bw_low_pass_filter(int order, double sampling_frequency, double half_power_frequency);
 BWHighPass* create_bw_high_pass_filter(int order, double sampling_frequency, double half_power_frequency);
 BWBandPass* create_bw_band_pass_filter(int order, double sampling_frequency, double half_power_frequency1, double half_power_frequency2);
@@ -116,6 +122,13 @@ double bw_high_pass(BWHighPass* filter, double input);
 double bw_band_pass(BWBandPass* filter, double input);
 double bw_band_stop(BWBandStop* filter, double input);
 
+/**
+ * create_bw_low_pass_filter
+ * order(double): filter order
+ * epsilon(double): ripple factor between [0,1]
+ * sampling_frequency(double): Sampling frequency
+ * half_power_frequency(double): Half-power frequency or cutoff frequency
+ */
 CHELowPass* create_che_low_pass_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency);
 CHEHighPass* create_che_high_pass_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency);
 CHEBandPass* create_che_band_pass_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency1, double half_power_frequency2);

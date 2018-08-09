@@ -58,7 +58,7 @@ typedef struct {
 } BWBandStop;
 
 typedef struct {
-    int n;
+    int m;
     double ep;
 	double *A;
     double *d1;
@@ -70,7 +70,7 @@ typedef struct {
 typedef CHELowPass CHEHighPass;
 
 typedef struct {
-    int n;
+    int m;
     double ep;
 	double *A;
     double *d1;
@@ -85,7 +85,7 @@ typedef struct {
 } CHEBandPass;
 
 typedef struct {
-    int n;
+    int m;
     double ep;
     double r;
     double s;
@@ -111,10 +111,25 @@ void free_bw_high_pass(BWHighPass* filter);
 void free_bw_band_pass(BWBandPass* filter);
 void free_bw_band_stop(BWBandStop* filter);
 
-double low_pass(BWLowPass* filter, double input);
-double high_pass(BWHighPass* filter, double input);
-double band_pass(BWBandPass* filter, double input);
-double band_stop(BWBandStop* filter, double input);
+double bw_low_pass(BWLowPass* filter, double input);
+double bw_high_pass(BWHighPass* filter, double input);
+double bw_band_pass(BWBandPass* filter, double input);
+double bw_band_stop(BWBandStop* filter, double input);
+
+CHELowPass* create_che_low_pass_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency);
+CHEHighPass* create_che_high_pass_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency);
+CHEBandPass* create_che_band_pass_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency1, double half_power_frequency2);
+CHEBandStop* create_che_band_stop_filter(int order, double epsilon, double sampling_frequency, double half_power_frequency1, double half_power_frequency2);
+
+void free_che_low_pass(CHELowPass* filter);
+void free_che_high_pass(CHEHighPass* filter);
+void free_che_band_pass(CHEBandPass* filter);
+void free_che_band_stop(CHEBandStop* filter);
+
+double che_low_pass(CHELowPass* filter, double input);
+double che_high_pass(CHEHighPass* filter, double input);
+double che_band_pass(CHEBandPass* filter, double input);
+double che_band_stop(CHEBandStop* filter, double input);
 
 #if __cplusplus
 }

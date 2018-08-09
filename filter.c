@@ -283,10 +283,82 @@ CHEHighPass* create_che_high_pass_filter(int n, double ep, double s, double f){
     return filter;
 }
 CHEBandPass* create_che_band_pass_filter(int n, double ep, double s, double f1, double f2){
+    CHEBandPass* filter = (CHEBandPass *) malloc(sizeof(CHEBandPass));
+    filter -> m = n/4;
+    filter -> ep = 2.0/ep;
+    filter -> A = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d1 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d2 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d3 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d4 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> w0 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w1 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w2 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w3 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w4 = (double *)calloc(filter -> m, sizeof(double));
 
+    double a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
+    double a2 = a*a;
+    double b = tan(M_PI*(f1-f2)/s);
+    double b2 = b*b;
+    double u = log((1.0+sqrt(1.0+ep*ep))/ep);
+    double su = sinh(2.0*u/(double)n);
+    double cu = cosh(2.0*u/(double)n);
+    double r, c;
+    
+    int i;
+    for(i=0; i < filter -> m; ++i){
+        r = sin(M_PI*(2.0*i+1.0)/n)*su;
+        c = cos(M_PI*(2.0*i+1.0)/n)*cu;
+        c = r*r + c*c;
+        s = b2*c + 2.0*b*r + 1.0;
+        filter->A[i] = b2/(4.0*s); // 4.0
+        filter->d1[i] = 4.0*a*(1.0+b*r)/s;
+        filter->d2[i] = 2.0*(b2*c-2.0*a2-1.0)/s;
+        filter->d3[i] = 4.0*a*(1.0-b*r)/s;
+        filter->d4[i] = -(b2*c - 2.0*b*r + 1.0)/s;
+    }
+    return filter;
 }
 CHEBandStop* create_che_band_stop_filter(int n, double ep, double s, double f1, double f2){
+    CHEBandStop* filter = (CHEBandStop *) malloc(sizeof(CHEBandStop));
+    filter -> m = n/4;
+    filter -> ep = 2.0/ep;
+    filter -> A = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d1 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d2 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d3 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> d4 = (double *)malloc(filter -> m*sizeof(double));
+    filter -> w0 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w1 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w2 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w3 = (double *)calloc(filter -> m, sizeof(double));
+    filter -> w4 = (double *)calloc(filter -> m, sizeof(double));
 
+    double a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
+    double a2 = a*a;
+    double b = tan(M_PI*(f1-f2)/s);
+    double b2 = b*b;
+    double u = log((1.0+sqrt(1.0+ep*ep))/ep);
+    double su = sinh(2.0*u/(double)n);
+    double cu = cosh(2.0*u/(double)n);
+    double r, c;
+    
+    int i;
+    for(i=0; i < filter -> m; ++i){
+        r = sin(M_PI*(2.0*i+1.0)/n)*su;
+        c = cos(M_PI*(2.0*i+1.0)/n)*cu;
+        c = r*r + c*c;
+        s = b2 + 2.0*b*r + c;
+        filter->A[i] = 1.0/(4.0*s); // 4.0
+        filter->d1[i] = 4.0*a*(c+b*r)/s;
+        filter->d2[i] = 2.0*(b2-2.0*a2*c-c)/s;
+        filter->d3[i] = 4.0*a*(c-b*r)/s;
+        filter->d4[i] = -(b2 - 2.0*b*r + c)/s;
+    }
+    filter->r = 4.0*a;
+    filter->s = 4.0*a2+2.0;
+    return filter;
 }
 
 void free_che_low_pass(CHELowPass* filter){
@@ -354,9 +426,27 @@ double che_high_pass(CHEHighPass* filter, double x){
     }
     return filter->ep*x;
 }
-double che_band_pass(CHEBandPass* filter, double input){
-
+double che_band_pass(CHEBandPass* filter, double x){
+    int i;
+    for(i=0; i<filter->m; ++i){
+        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
+        x = filter->A[i]*(filter->w0[i] - 2.0*filter->w2[i] + filter->w4[i]);
+        filter->w4[i] = filter->w3[i];
+        filter->w3[i] = filter->w2[i];
+        filter->w2[i] = filter->w1[i];
+        filter->w1[i] = filter->w0[i];
+    }
+    return filter->ep*x;
 }
-double che_band_stop(CHEBandStop* filter, double input){
-    
+double che_band_stop(CHEBandStop* filter, double x){
+    int i;
+    for(i=0; i<filter->m; ++i){
+        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
+        x = filter->A[i]*(filter->w0[i] - filter->r*filter->w1[i] + filter->s*filter->w2[i]- filter->r*filter->w3[i] + filter->w4[i]);
+        filter->w4[i] = filter->w3[i];
+        filter->w3[i] = filter->w2[i];
+        filter->w2[i] = filter->w1[i];
+        filter->w1[i] = filter->w0[i];
+    }
+    return filter->ep*x;
 }

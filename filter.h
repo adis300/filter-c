@@ -40,6 +40,7 @@ typedef struct {
     double *w3;
     double *w4;
 } BWBandPass;
+
 typedef struct {
     int n;
     double r;
@@ -55,6 +56,50 @@ typedef struct {
     double *w3;
     double *w4;
 } BWBandStop;
+
+typedef struct {
+    int n;
+    double ep;
+	double *A;
+    double *d1;
+    double *d2;
+    double *w0;
+    double *w1;
+    double *w2;
+} CHELowPass;
+typedef CHELowPass CHEHighPass;
+
+typedef struct {
+    int n;
+    double ep;
+	double *A;
+    double *d1;
+    double *d2;
+    double *d3;
+    double *d4;
+    double *w0;
+    double *w1;
+    double *w2;
+    double *w3;
+    double *w4;
+} CHEBandPass;
+
+typedef struct {
+    int n;
+    double ep;
+    double r;
+    double s;
+	double *A;
+    double *d1;
+    double *d2;
+    double *d3;
+    double *d4;
+    double *w0;
+    double *w1;
+    double *w2;
+    double *w3;
+    double *w4;
+} CHEBandStop;
 
 BWLowPass* create_bw_low_pass_filter(int order, double sampling_frequency, double half_power_frequency);
 BWHighPass* create_bw_high_pass_filter(int order, double sampling_frequency, double half_power_frequency);

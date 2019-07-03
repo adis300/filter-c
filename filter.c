@@ -13,23 +13,20 @@
 #include <math.h>
 #include "filter.h"
 
-BWLowPass* create_bw_low_pass_filter(int order, double s, double f) {
-    if(order % 2){
-        printf("create_bw_low_pass_filter:Order must be 2,4,6,8,...\n");
-        return NULL;
-    }
+
+BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f) {
     BWLowPass* filter = (BWLowPass *) malloc(sizeof(BWLowPass));
     filter -> n = order/2;
-    filter -> A = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> w0 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> n, sizeof(double));
+    filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
-    double a = tan(M_PI * f/s);
-    double a2 = a * a;
-    double r;
+    FTR_PRECISION a = tan(M_PI * f/s);
+    FTR_PRECISION a2 = a * a;
+    FTR_PRECISION r;
     
     int i;
     
@@ -42,23 +39,19 @@ BWLowPass* create_bw_low_pass_filter(int order, double s, double f) {
     }
     return filter;
 }
-BWHighPass* create_bw_high_pass_filter(int order, double s, double f){
-    if(order % 2){
-        printf("create_bw_high_pass_filter:Order must be 2,4,6,8,...\n");
-        return NULL;
-    }
+BWHighPass* create_bw_high_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f){
     BWHighPass* filter = (BWHighPass *) malloc(sizeof(BWHighPass));
     filter -> n = order/2;
-    filter -> A = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> w0 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> n, sizeof(double));
+    filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
-    double a = tan(M_PI * f/s);
-    double a2 = a * a;
-    double r;
+    FTR_PRECISION a = tan(M_PI * f/s);
+    FTR_PRECISION a2 = a * a;
+    FTR_PRECISION r;
     
     int i;
 
@@ -71,31 +64,27 @@ BWHighPass* create_bw_high_pass_filter(int order, double s, double f){
     }
     return filter;
 }
-BWBandPass* create_bw_band_pass_filter(int order, double s, double f1, double f2){
-    if(order % 4){
-        printf("create_bw_band_stop_filter:Order must be 4,8,12,16,...\n");
-        return NULL;
-    }
+BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f1, FTR_PRECISION f2){
     BWBandPass* filter = (BWBandPass *) malloc(sizeof(BWBandPass));
     filter -> n = order/4;
-    filter -> A = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d3 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d4 = (double *)malloc(filter -> n*sizeof(double));
+    filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d3 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d4 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
 
-    filter -> w0 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w3 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w4 = (double *)calloc(filter -> n, sizeof(double));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w3 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w4 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
   
-    double a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
-    double a2 = a*a;
-    double b = tan(M_PI*(f1-f2)/s);
-    double b2 = b*b;
-    double r;
+    FTR_PRECISION a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
+    FTR_PRECISION a2 = a*a;
+    FTR_PRECISION b = tan(M_PI*(f1-f2)/s);
+    FTR_PRECISION b2 = b*b;
+    FTR_PRECISION r;
     int i;
     for(i=0; i<filter->n; ++i){
         r = sin(M_PI*(2.0*i+1.0)/(4.0*filter->n));
@@ -108,30 +97,26 @@ BWBandPass* create_bw_band_pass_filter(int order, double s, double f1, double f2
     }
     return filter;
 }
-BWBandStop* create_bw_band_stop_filter(int order, double s, double f1, double f2){
-    if(order % 4){
-        printf("create_bw_band_stop_filter:Order must be 4,8,12,16,...\n");
-        return NULL;
-    }
+BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION f1, FTR_PRECISION f2){
     BWBandStop* filter = (BWBandStop *) malloc(sizeof(BWBandStop));
     filter -> n = order/4;
-    filter -> A = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d3 = (double *)malloc(filter -> n*sizeof(double));
-    filter -> d4 = (double *)malloc(filter -> n*sizeof(double));
+    filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d3 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
+    filter -> d4 = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
 
-    filter -> w0 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w3 = (double *)calloc(filter -> n, sizeof(double));
-    filter -> w4 = (double *)calloc(filter -> n, sizeof(double));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w3 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
+    filter -> w4 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
-    double a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
-    double a2 = a*a;
-    double b = tan(M_PI*(f1-f2)/s);
-    double b2 = b*b;
-    double r;
+    FTR_PRECISION a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
+    FTR_PRECISION a2 = a*a;
+    FTR_PRECISION b = tan(M_PI*(f1-f2)/s);
+    FTR_PRECISION b2 = b*b;
+    FTR_PRECISION r;
 
     int i;
     for(i=0; i<filter->n; ++i){
@@ -193,7 +178,7 @@ void free_bw_band_stop(BWBandStop* filter){
     free(filter);
 }
 
-double bw_low_pass(BWLowPass* filter, double x){
+FTR_PRECISION low_pass(BWLowPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
@@ -203,7 +188,7 @@ double bw_low_pass(BWLowPass* filter, double x){
     }
     return x;
 }
-double bw_high_pass(BWHighPass* filter, double x){
+FTR_PRECISION high_pass(BWHighPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
@@ -213,7 +198,7 @@ double bw_high_pass(BWHighPass* filter, double x){
     }
     return x;
 }
-double bw_band_pass(BWBandPass* filter, double x){
+FTR_PRECISION band_pass(BWBandPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
@@ -225,7 +210,7 @@ double bw_band_pass(BWBandPass* filter, double x){
     }
     return x;
 }
-double bw_band_stop(BWBandStop* filter, double x){
+FTR_PRECISION band_stop(BWBandStop* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
@@ -238,247 +223,31 @@ double bw_band_stop(BWBandStop* filter, double x){
     return x;
 }
 
-CHELowPass* create_che_low_pass_filter(int n, double ep, double s, double f){
-    if(n % 2){
-        printf("create_che_low_pass_filter:Order must be 2,4,6,8,...\n");
-        return NULL;
-    }
-    CHELowPass* filter = (CHELowPass *) malloc(sizeof(CHELowPass));
-    filter -> m = n/2;
-    filter -> ep = 2.0/ep;
-    filter -> A = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> w0 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> m, sizeof(double));
-
-    double a = tan(M_PI*f/s);
-    double a2 = a*a;
-    double u = log((1.0+sqrt(1.0+ep*ep))/ep);
-    double su = sinh(u/(double)n);
-    double cu = cosh(u/(double)n);
-    double b, c;
-    
-    int i;
-    for(i=0; i < filter -> m; ++i){
-        b = sin(M_PI*(2.0*i+1.0)/(2.0*n))*su;
-        c = cos(M_PI*(2.0*i+1.0)/(2.0*n))*cu;
-        c = b*b + c*c;
-        s = a2*c + 2.0*a*b + 1.0;
-        filter->A[i] = a2/(4.0*s); // 4.0
-        filter->d1[i] = 2.0*(1-a2*c)/s;
-        filter->d2[i] = -(a2*c - 2.0*a*b + 1.0)/s;
-    }
-    return filter;
-}
-CHEHighPass* create_che_high_pass_filter(int n, double ep, double s, double f){
-    if(n % 2){
-        printf("create_che_high_pass_filter:Order must be 2,4,6,8,...\n");
-        return NULL;
-    }
-    CHEHighPass* filter = (CHEHighPass *) malloc(sizeof(CHEHighPass));
-    filter -> m = n/2;
-    filter -> ep = 2.0/ep; // Used to normalize
-    filter -> A = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> w0 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> m, sizeof(double));
-
-    double a = tan(M_PI*f/s);
-    double a2 = a*a;
-    double u = log((1.0+sqrt(1.0+ep*ep))/ep);
-    double su = sinh(u/(double)n);
-    double cu = cosh(u/(double)n);
-    double b, c;
-    
-    int i;
-    for(i=0; i < filter -> m; ++i){
-        b = sin(M_PI*(2.0*i+1.0)/(2.0*n))*su;
-        c = cos(M_PI*(2.0*i+1.0)/(2.0*n))*cu;
-        c = b*b + c*c;
-        s = a2 + 2.0*a*b + c;
-        filter->A[i] = 1.0/(4.0*s); // 4.0
-        filter->d1[i] = 2.0*(c-a2)/s;
-        filter->d2[i] = -(a2 - 2.0*a*b + c)/s;
-    }
-    return filter;
-}
-CHEBandPass* create_che_band_pass_filter(int n, double ep, double s, double f1, double f2){
-    if(n % 4){
-        printf("create_che_band_pass_filter:Order must be 4,8,12,16,...\n");
-        return NULL;
-    }
-    CHEBandPass* filter = (CHEBandPass *) malloc(sizeof(CHEBandPass));
-    filter -> m = n/4;
-    filter -> ep = 2.0/ep;
-    filter -> A = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d3 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d4 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> w0 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w3 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w4 = (double *)calloc(filter -> m, sizeof(double));
-
-    double a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
-    double a2 = a*a;
-    double b = tan(M_PI*(f1-f2)/s);
-    double b2 = b*b;
-    double u = log((1.0+sqrt(1.0+ep*ep))/ep);
-    double su = sinh(2.0*u/(double)n);
-    double cu = cosh(2.0*u/(double)n);
-    double r, c;
-    
-    int i;
-    for(i=0; i < filter -> m; ++i){
-        r = sin(M_PI*(2.0*i+1.0)/n)*su;
-        c = cos(M_PI*(2.0*i+1.0)/n)*cu;
-        c = r*r + c*c;
-        s = b2*c + 2.0*b*r + 1.0;
-        filter->A[i] = b2/(4.0*s); // 4.0
-        filter->d1[i] = 4.0*a*(1.0+b*r)/s;
-        filter->d2[i] = 2.0*(b2*c-2.0*a2-1.0)/s;
-        filter->d3[i] = 4.0*a*(1.0-b*r)/s;
-        filter->d4[i] = -(b2*c - 2.0*b*r + 1.0)/s;
-    }
-    return filter;
-}
-CHEBandStop* create_che_band_stop_filter(int n, double ep, double s, double f1, double f2){
-    if(n % 4){
-        printf("create_che_band_stop_filter:Order must be 4,8,12,16,...\n");
-        return NULL;
-    }
-    CHEBandStop* filter = (CHEBandStop *) malloc(sizeof(CHEBandStop));
-    filter -> m = n/4;
-    filter -> ep = 2.0/ep;
-    filter -> A = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d1 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d2 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d3 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> d4 = (double *)malloc(filter -> m*sizeof(double));
-    filter -> w0 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w1 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w2 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w3 = (double *)calloc(filter -> m, sizeof(double));
-    filter -> w4 = (double *)calloc(filter -> m, sizeof(double));
-
-    double a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
-    double a2 = a*a;
-    double b = tan(M_PI*(f1-f2)/s);
-    double b2 = b*b;
-    double u = log((1.0+sqrt(1.0+ep*ep))/ep);
-    double su = sinh(2.0*u/(double)n);
-    double cu = cosh(2.0*u/(double)n);
-    double r, c;
-    
-    int i;
-    for(i=0; i < filter -> m; ++i){
-        r = sin(M_PI*(2.0*i+1.0)/n)*su;
-        c = cos(M_PI*(2.0*i+1.0)/n)*cu;
-        c = r*r + c*c;
-        s = b2 + 2.0*b*r + c;
-        filter->A[i] = 1.0/(4.0*s); // 4.0
-        filter->d1[i] = 4.0*a*(c+b*r)/s;
-        filter->d2[i] = 2.0*(b2-2.0*a2*c-c)/s;
-        filter->d3[i] = 4.0*a*(c-b*r)/s;
-        filter->d4[i] = -(b2 - 2.0*b*r + c)/s;
-    }
-    filter->r = 4.0*a;
-    filter->s = 4.0*a2+2.0;
-    return filter;
+FTR_PRECISION softmax(FTR_PRECISION* data, int size, int target_ind){
+    FTR_PRECISION sum = 0;
+    for(int i = 0; i < size; i++) sum += data[i];
+    return data[target_ind]/sum;
 }
 
-void free_che_low_pass(CHELowPass* filter){
-    free(filter -> A);
-    free(filter -> d1);
-    free(filter -> d2);
-    free(filter -> w0);
-    free(filter -> w1);
-    free(filter -> w2);
-    free(filter);
-}
-void free_che_high_pass(CHEHighPass* filter){
-    free(filter -> A);
-    free(filter -> d1);
-    free(filter -> d2);
-    free(filter -> w0);
-    free(filter -> w1);
-    free(filter -> w2);
-    free(filter);
-}
-void free_che_band_pass(CHEBandPass* filter){
-    free(filter -> A);
-    free(filter -> d1);
-    free(filter -> d2);
-    free(filter -> d3);
-    free(filter -> d4);
-    free(filter -> w0);
-    free(filter -> w1);
-    free(filter -> w2);
-    free(filter -> w3);
-    free(filter -> w4);
-    free(filter);
-}
-void free_che_band_stop(CHEBandStop* filter){
-    free(filter -> A);
-    free(filter -> d1);
-    free(filter -> d2);
-    free(filter -> d3);
-    free(filter -> d4);
-    free(filter -> w0);
-    free(filter -> w1);
-    free(filter -> w2);
-    free(filter -> w3);
-    free(filter -> w4);
-    free(filter);
-}
+static const FTR_PRECISION SPIKE_KERNEL[] = {-1.0, 2.0, -1.0};
+void spike_filter_upward(FTR_PRECISION * input, int size, FTR_PRECISION * output, FTR_PRECISION strength){
+    FTR_PRECISION mean = 0.0;
+    FTR_PRECISION std = 0.0;
+    FTR_PRECISION diff = 0.0;
+    for(int i=0; i < size; i++) mean += input[i];
+    mean /= size;
 
-double che_low_pass(CHELowPass* filter, double x){
-    int i;
-    for(i=0; i<filter->m; ++i){
-        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
-        x = filter->A[i]*(filter->w0[i] + 2.0*filter->w1[i] + filter->w2[i]);
-        filter->w2[i] = filter->w1[i];
-        filter->w1[i] = filter->w0[i];
+    for(int i=0; i < size; i++){
+        diff = input[i] - mean;
+        std += diff * diff;
     }
-    return filter->ep*x;
-}
-double che_high_pass(CHEHighPass* filter, double x){
-    int i;
-    for(i=0; i<filter->m; ++i){
-        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
-        x = filter->A[i]*(filter->w0[i] - 2.0*filter->w1[i] + filter->w2[i]);
-        filter->w2[i] = filter->w1[i];
-        filter->w1[i] = filter->w0[i];
+    std = sqrt(std/size);
+      
+    output[0] = 0.0;
+    output[size - 1] = 0.0;
+    for(int i=1; i<size-1; i++){
+        FTR_PRECISION val = input[i-1] * SPIKE_KERNEL[0] + input[i] * SPIKE_KERNEL[1] + input[i+1] * SPIKE_KERNEL[2];
+        if(val < strength * std) output[i] = 0.0;
+        else output[i] = val;
     }
-    return filter->ep*x;
-}
-double che_band_pass(CHEBandPass* filter, double x){
-    int i;
-    for(i=0; i<filter->m; ++i){
-        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
-        x = filter->A[i]*(filter->w0[i] - 2.0*filter->w2[i] + filter->w4[i]);
-        filter->w4[i] = filter->w3[i];
-        filter->w3[i] = filter->w2[i];
-        filter->w2[i] = filter->w1[i];
-        filter->w1[i] = filter->w0[i];
-    }
-    return filter->ep*x;
-}
-double che_band_stop(CHEBandStop* filter, double x){
-    int i;
-    for(i=0; i<filter->m; ++i){
-        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
-        x = filter->A[i]*(filter->w0[i] - filter->r*filter->w1[i] + filter->s*filter->w2[i]- filter->r*filter->w3[i] + filter->w4[i]);
-        filter->w4[i] = filter->w3[i];
-        filter->w3[i] = filter->w2[i];
-        filter->w2[i] = filter->w1[i];
-        filter->w1[i] = filter->w0[i];
-    }
-    return filter->ep*x;
 }

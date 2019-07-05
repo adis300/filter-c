@@ -64,7 +64,7 @@ BWHighPass* create_bw_high_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     }
     return filter;
 }
-BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f1, FTR_PRECISION f2){
+BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION fl, FTR_PRECISION fu){
     BWBandPass* filter = (BWBandPass *) malloc(sizeof(BWBandPass));
     filter -> n = order/4;
     filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
@@ -80,9 +80,9 @@ BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     filter -> w4 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
   
-    FTR_PRECISION a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
+    FTR_PRECISION a = cos(M_PI*(fu+fl)/s)/cos(M_PI*(fu-fl)/s);
     FTR_PRECISION a2 = a*a;
-    FTR_PRECISION b = tan(M_PI*(f1-f2)/s);
+    FTR_PRECISION b = tan(M_PI*(fu-fl)/s);
     FTR_PRECISION b2 = b*b;
     FTR_PRECISION r;
     int i;
@@ -97,7 +97,7 @@ BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     }
     return filter;
 }
-BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION f1, FTR_PRECISION f2){
+BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION fl, FTR_PRECISION fu){
     BWBandStop* filter = (BWBandStop *) malloc(sizeof(BWBandStop));
     filter -> n = order/4;
     filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
@@ -112,9 +112,9 @@ BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION
     filter -> w3 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
     filter -> w4 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
-    FTR_PRECISION a = cos(M_PI*(f1+f2)/s)/cos(M_PI*(f1-f2)/s);
+    FTR_PRECISION a = cos(M_PI*(fu+fl)/s)/cos(M_PI*(fu-fl)/s);
     FTR_PRECISION a2 = a*a;
-    FTR_PRECISION b = tan(M_PI*(f1-f2)/s);
+    FTR_PRECISION b = tan(M_PI*(fu-fl)/s);
     FTR_PRECISION b2 = b*b;
     FTR_PRECISION r;
 

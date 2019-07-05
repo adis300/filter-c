@@ -64,8 +64,8 @@ typedef struct {
 
 BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency);
 BWHighPass* create_bw_high_pass_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency);
-BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency1, FTR_PRECISION half_power_frequency2);
-BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency1, FTR_PRECISION half_power_frequency2);
+BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION lower_half_power_frequency, FTR_PRECISION upper_half_power_frequency);
+BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION lower_half_power_frequency, FTR_PRECISION upper_half_power_frequency);
 
 void free_bw_low_pass(BWLowPass* filter);
 void free_bw_high_pass(BWHighPass* filter);

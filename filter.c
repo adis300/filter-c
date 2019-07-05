@@ -65,6 +65,10 @@ BWHighPass* create_bw_high_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     return filter;
 }
 BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION fl, FTR_PRECISION fu){
+    if(fu <= fl){
+        printf("ERROR:Lower half-power frequency is smaller than higher half-power frequency");
+        return NULL;
+    }
     BWBandPass* filter = (BWBandPass *) malloc(sizeof(BWBandPass));
     filter -> n = order/4;
     filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));
@@ -98,6 +102,11 @@ BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     return filter;
 }
 BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION fl, FTR_PRECISION fu){
+    if(fu <= fl){
+        printf("ERROR:Lower half-power frequency is smaller than higher half-power frequency");
+        return NULL;
+    }
+
     BWBandStop* filter = (BWBandStop *) malloc(sizeof(BWBandStop));
     filter -> n = order/4;
     filter -> A = (FTR_PRECISION *)malloc(filter -> n*sizeof(FTR_PRECISION));

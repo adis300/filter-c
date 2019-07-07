@@ -8,8 +8,8 @@ void band_pass_example()
 {
     BWBandPass* filter = create_bw_band_pass_filter(4, 250, 2, 45);
     
-    for(int i = 0; i < 1250; i++){
-        printf("Output[%d]:%f\n", i, band_pass(filter, i* 400000/1250));
+    for(int i = 0; i < 100; i++){
+        printf("Output[%d]:%f\n", i, band_pass(filter, i* 100));
     }
 
     free_bw_band_pass(filter);

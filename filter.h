@@ -20,7 +20,6 @@ extern "C"{
 
 #define FTR_PRECISION float
 
-
 typedef struct {
     int n;
 	FTR_PRECISION *A;

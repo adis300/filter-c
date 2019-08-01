@@ -13,6 +13,15 @@
 #include <math.h>
 #include "filter.h"
 
+#if FTR_PRECISION == float
+#define COS cosf
+#define SIN sinf
+#define TAN tanf
+#else
+#define COS cos
+#define SIN sin
+#define TAN tan
+#endif
 
 BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f) {
     BWLowPass* filter = (BWLowPass *) malloc(sizeof(BWLowPass));
@@ -24,14 +33,14 @@ BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f
     filter -> w1 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
     filter -> w2 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
-    FTR_PRECISION a = tan(M_PI * f/s);
+    FTR_PRECISION a = TAN(M_PI * f/s);
     FTR_PRECISION a2 = a * a;
     FTR_PRECISION r;
     
     int i;
     
     for(i=0; i < filter -> n; ++i){
-        r = sin(M_PI*(2.0*i+1.0)/(4.0*filter -> n));
+        r = SIN(M_PI*(2.0*i+1.0)/(4.0*filter -> n));
         s = a2 + 2.0*a*r + 1.0;
         filter -> A[i] = a2/s;
         filter -> d1[i] = 2.0*(1-a2)/s;
@@ -56,7 +65,7 @@ BWHighPass* create_bw_high_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     int i;
 
     for(i=0; i < filter -> n; ++i){
-        r = sin(M_PI*(2.0*i+1.0)/(4.0*filter -> n));
+        r = SIN(M_PI*(2.0*i+1.0)/(4.0*filter -> n));
         s = a2 + 2.0*a*r + 1.0;
         filter -> A[i] = 1.0/s;
         filter -> d1[i] = 2.0*(1-a2)/s;
@@ -84,14 +93,14 @@ BWBandPass* create_bw_band_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION
     filter -> w4 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
   
-    FTR_PRECISION a = cos(M_PI*(fu+fl)/s)/cos(M_PI*(fu-fl)/s);
+    FTR_PRECISION a = COS(M_PI*(fu+fl)/s)/COS(M_PI*(fu-fl)/s);
     FTR_PRECISION a2 = a*a;
-    FTR_PRECISION b = tan(M_PI*(fu-fl)/s);
+    FTR_PRECISION b = TAN(M_PI*(fu-fl)/s);
     FTR_PRECISION b2 = b*b;
     FTR_PRECISION r;
     int i;
     for(i=0; i<filter->n; ++i){
-        r = sin(M_PI*(2.0*i+1.0)/(4.0*filter->n));
+        r = SIN(M_PI*(2.0*i+1.0)/(4.0*filter->n));
         s = b2 + 2.0*b*r + 1.0;
         filter->A[i] = b2/s;
         filter->d1[i] = 4.0*a*(1.0+b*r)/s;
@@ -121,15 +130,15 @@ BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION
     filter -> w3 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
     filter -> w4 = (FTR_PRECISION *)calloc(filter -> n, sizeof(FTR_PRECISION));
 
-    FTR_PRECISION a = cos(M_PI*(fu+fl)/s)/cos(M_PI*(fu-fl)/s);
+    FTR_PRECISION a = COS(M_PI*(fu+fl)/s)/COS(M_PI*(fu-fl)/s);
     FTR_PRECISION a2 = a*a;
-    FTR_PRECISION b = tan(M_PI*(fu-fl)/s);
+    FTR_PRECISION b = TAN(M_PI*(fu-fl)/s);
     FTR_PRECISION b2 = b*b;
     FTR_PRECISION r;
 
     int i;
     for(i=0; i<filter->n; ++i){
-        r = sin(M_PI*(2.0*i+1.0)/(4.0*filter->n));
+        r = SIN(M_PI*(2.0*i+1.0)/(4.0*filter->n));
         s = b2 + 2.0*b*r + 1.0;
         filter->A[i] = 1.0/s;
         filter->d1[i] = 4.0*a*(1.0+b*r)/s;

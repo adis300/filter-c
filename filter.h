@@ -22,14 +22,8 @@ extern "C"{
 
 #if DOUBLE_PRECISION
 #define FTR_PRECISION double
-#define COS cos
-#define SIN sin
-#define TAN tan
 #else
 #define FTR_PRECISION float
-#define COS cosf
-#define SIN sinf
-#define TAN tanf
 #endif
 
 typedef struct {

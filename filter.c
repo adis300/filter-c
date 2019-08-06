@@ -13,16 +13,6 @@
 #include <math.h>
 #include "filter.h"
 
-#if FTR_PRECISION == float
-#define COS cosf
-#define SIN sinf
-#define TAN tanf
-#else
-#define COS cos
-#define SIN sin
-#define TAN tan
-#endif
-
 BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f) {
     BWLowPass* filter = (BWLowPass *) malloc(sizeof(BWLowPass));
     filter -> n = order/2;

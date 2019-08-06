@@ -17,10 +17,12 @@
 #define COS cos
 #define SIN sin
 #define TAN tan
+#define SQRT sqrt
 #else
 #define COS cosf
 #define SIN sinf
 #define TAN tanf
+#define SQRT sqrtf
 #endif
 
 BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f) {
@@ -259,7 +261,7 @@ void spike_filter_upward(FTR_PRECISION * input, int size, FTR_PRECISION * output
         diff = input[i] - mean;
         std += diff * diff;
     }
-    std = sqrt(std/size);
+    std = SQRT(std/size);
       
     output[0] = 0.0;
     output[size - 1] = 0.0;

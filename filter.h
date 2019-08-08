@@ -16,14 +16,18 @@ extern "C"{
 
 #define DOUBLE_PRECISION 0
 
-#if defined(_WIN32)
-#define M_PI 3.141592653589793238462643383279502884197163993751
-#endif
+
 
 #if DOUBLE_PRECISION
 #define FTR_PRECISION double
+#if defined(_WIN32)
+#define M_PI 3.141592653589793238462643383279502884197163993751
+#endif
 #else
 #define FTR_PRECISION float
+#if defined(_WIN32)
+#define M_PI 3.1415927
+#endif
 #endif
 
 typedef struct {

@@ -1,5 +1,5 @@
 # filter-c
-Butterworth [lowpass, highpass, bandpass, bandstop] filters implementations in C.
+Butterworth and chebyshev [lowpass, highpass, bandpass, bandstop] filters implementations in C.
 
 based on algorithm from http://www.exstrom.com/journal/sigproc/
 

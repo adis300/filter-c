@@ -81,10 +81,10 @@ void free_bw_high_pass(BWHighPass* filter);
 void free_bw_band_pass(BWBandPass* filter);
 void free_bw_band_stop(BWBandStop* filter);
 
-FTR_PRECISION low_pass(BWLowPass* filter, FTR_PRECISION input);
-FTR_PRECISION high_pass(BWHighPass* filter, FTR_PRECISION input);
-FTR_PRECISION band_pass(BWBandPass* filter, FTR_PRECISION input);
-FTR_PRECISION band_stop(BWBandStop* filter, FTR_PRECISION input);
+FTR_PRECISION bw_low_pass(BWLowPass* filter, FTR_PRECISION input);
+FTR_PRECISION bw_high_pass(BWHighPass* filter, FTR_PRECISION input);
+FTR_PRECISION bw_band_pass(BWBandPass* filter, FTR_PRECISION input);
+FTR_PRECISION bw_band_stop(BWBandStop* filter, FTR_PRECISION input);
 
 FTR_PRECISION softmax(FTR_PRECISION* data, int size, int target_ind);
 

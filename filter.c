@@ -198,7 +198,7 @@ void free_bw_band_stop(BWBandStop* filter){
     free(filter);
 }
 
-FTR_PRECISION low_pass(BWLowPass* filter, FTR_PRECISION x){
+FTR_PRECISION bw_low_pass(BWLowPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
@@ -208,7 +208,7 @@ FTR_PRECISION low_pass(BWLowPass* filter, FTR_PRECISION x){
     }
     return x;
 }
-FTR_PRECISION high_pass(BWHighPass* filter, FTR_PRECISION x){
+FTR_PRECISION bw_high_pass(BWHighPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
@@ -218,7 +218,7 @@ FTR_PRECISION high_pass(BWHighPass* filter, FTR_PRECISION x){
     }
     return x;
 }
-FTR_PRECISION band_pass(BWBandPass* filter, FTR_PRECISION x){
+FTR_PRECISION bw_band_pass(BWBandPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
@@ -230,7 +230,7 @@ FTR_PRECISION band_pass(BWBandPass* filter, FTR_PRECISION x){
     }
     return x;
 }
-FTR_PRECISION band_stop(BWBandStop* filter, FTR_PRECISION x){
+FTR_PRECISION bw_band_stop(BWBandStop* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;

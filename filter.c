@@ -153,6 +153,19 @@ BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION
     return filter;
 }
 
+CHELowPass* create_che_low_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency){
+
+}
+CHEHighPass* create_che_high_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency){
+
+}
+CHEBandPass* create_che_band_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION lower_half_power_frequency, FTR_PRECISION upper_half_power_frequency){
+
+}
+CHEBandStop* create_che_band_stop_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION lower_half_power_frequency, FTR_PRECISION upper_half_power_frequency){
+    
+}
+
 void free_bw_low_pass(BWLowPass* filter){
     free(filter -> A);
     free(filter -> d1);

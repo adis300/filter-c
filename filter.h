@@ -39,7 +39,20 @@ typedef struct {
     FTR_PRECISION *w1;
     FTR_PRECISION *w2;
 } BWLowPass;
+// BWHighPass uses exactly the same struct
 typedef BWLowPass BWHighPass;
+
+typedef struct {
+    int n;
+    FTR_PRECISION ep;
+	FTR_PRECISION *A;
+    FTR_PRECISION *d1;
+    FTR_PRECISION *d2;
+    FTR_PRECISION *w0;
+    FTR_PRECISION *w1;
+    FTR_PRECISION *w2;
+} CheLowPass;
+typedef CheLowPass CHEHighPass;
 
 typedef struct {
     int n;
@@ -57,6 +70,21 @@ typedef struct {
 
 typedef struct {
     int n;
+    FTR_PRECISION ep;
+	FTR_PRECISION *A;
+    FTR_PRECISION *d1;
+    FTR_PRECISION *d2;
+    FTR_PRECISION *d3;
+    FTR_PRECISION *d4;
+    FTR_PRECISION *w0;
+    FTR_PRECISION *w1;
+    FTR_PRECISION *w2;
+    FTR_PRECISION *w3;
+    FTR_PRECISION *w4;
+} CHEBandPass;
+
+typedef struct {
+    int n;
     FTR_PRECISION r;
     FTR_PRECISION s;
 	FTR_PRECISION *A;
@@ -70,6 +98,23 @@ typedef struct {
     FTR_PRECISION *w3;
     FTR_PRECISION *w4;
 } BWBandStop;
+
+typedef struct {
+    int n;
+    FTR_PRECISION ep;
+    FTR_PRECISION r;
+    FTR_PRECISION s;
+	FTR_PRECISION *A;
+    FTR_PRECISION *d1;
+    FTR_PRECISION *d2;
+    FTR_PRECISION *d3;
+    FTR_PRECISION *d4;
+    FTR_PRECISION *w0;
+    FTR_PRECISION *w1;
+    FTR_PRECISION *w2;
+    FTR_PRECISION *w3;
+    FTR_PRECISION *w4;
+} CHEBandStop;
 
 BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency);
 BWHighPass* create_bw_high_pass_filter(int order, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency);

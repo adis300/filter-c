@@ -17,12 +17,18 @@
 #define COS cos
 #define SIN sin
 #define TAN tan
+#define COSH cosh
+#define SINH sinh
 #define SQRT sqrt
+#define LOG log
 #else
 #define COS cosf
 #define SIN sinf
 #define TAN tanf
+#define COSH coshf
+#define SINH sinhf
 #define SQRT sqrtf
+#define LOG logf
 #endif
 
 BWLowPass* create_bw_low_pass_filter(int order, FTR_PRECISION s, FTR_PRECISION f) {

@@ -132,6 +132,11 @@ void free_bw_high_pass(BWHighPass* filter);
 void free_bw_band_pass(BWBandPass* filter);
 void free_bw_band_stop(BWBandStop* filter);
 
+void free_che_low_pass(CHELowPass* filter);
+void free_che_high_pass(CHEHighPass* filter);
+void free_che_band_pass(CHEBandPass* filter);
+void free_che_band_stop(CHEBandStop* filter);
+
 FTR_PRECISION bw_low_pass(BWLowPass* filter, FTR_PRECISION input);
 FTR_PRECISION bw_high_pass(BWHighPass* filter, FTR_PRECISION input);
 FTR_PRECISION bw_band_pass(BWBandPass* filter, FTR_PRECISION input);

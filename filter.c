@@ -217,6 +217,19 @@ void free_bw_band_stop(BWBandStop* filter){
     free(filter);
 }
 
+void free_che_low_pass(CHELowPass* filter){
+
+}
+void free_che_high_pass(CHEHighPass* filter){
+
+}
+void free_che_band_pass(CHEBandPass* filter){
+
+}
+void free_che_band_stop(CHEBandStop* filter){
+    
+}
+
 FTR_PRECISION bw_low_pass(BWLowPass* filter, FTR_PRECISION x){
     int i;
     for(i=0; i<filter->n; ++i){

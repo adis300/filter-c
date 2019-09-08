@@ -43,7 +43,7 @@ typedef struct {
 typedef BWLowPass BWHighPass;
 
 typedef struct {
-    int n;
+    int m;
     FTR_PRECISION ep;
 	FTR_PRECISION *A;
     FTR_PRECISION *d1;
@@ -136,6 +136,7 @@ void free_che_low_pass(CHELowPass* filter);
 void free_che_high_pass(CHEHighPass* filter);
 void free_che_band_pass(CHEBandPass* filter);
 void free_che_band_stop(CHEBandStop* filter);
+
 
 FTR_PRECISION bw_low_pass(BWLowPass* filter, FTR_PRECISION input);
 FTR_PRECISION bw_high_pass(BWHighPass* filter, FTR_PRECISION input);

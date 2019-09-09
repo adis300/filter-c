@@ -69,7 +69,7 @@ typedef struct {
 } BWBandPass;
 
 typedef struct {
-    int n;
+    int m;
     FTR_PRECISION ep;
 	FTR_PRECISION *A;
     FTR_PRECISION *d1;
@@ -100,7 +100,7 @@ typedef struct {
 } BWBandStop;
 
 typedef struct {
-    int n;
+    int m;
     FTR_PRECISION ep;
     FTR_PRECISION r;
     FTR_PRECISION s;

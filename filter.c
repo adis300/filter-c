@@ -159,8 +159,38 @@ BWBandStop* create_bw_band_stop_filter(int order, FTR_PRECISION s, FTR_PRECISION
     return filter;
 }
 
-CHELowPass* create_che_low_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency){
+CHELowPass* create_che_low_pass_filter(int n, FTR_PRECISION epsilon, FTR_PRECISION s, FTR_PRECISION f){
+    CHELowPass* filter = (CHELowPass *) malloc(sizeof(CHELowPass));
+    filter -> m = n/2;
+    filter -> A = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    
 
+    FTR_PRECISION a = tan(M_PI * f/ s);
+    FTR_PRECISION a2 = a * a;
+    
+    FTR_PRECISION u = LOG((1.0+SQRT(1.0+epsilon*epsilon))/epsilon);
+    FTR_PRECISION su = SINH(u/(FTR_PRECISION)n);
+    FTR_PRECISION cu = COSH(u/(FTR_PRECISION)n);
+    FTR_PRECISION b,c,x;
+    
+    int i;
+    for(i=0; i<filter->m; ++i){
+        b = SIN(M_PI*(2.0*i+1.0)/(2.0*n))*su;
+        c = COS(M_PI*(2.0*i+1.0)/(2.0*n))*cu;
+        c = b*b + c*c;
+        s = a2*c + 2.0*a*b + 1.0;
+        filter->A[i] = a2/(4.0*s); // 4.0
+        filter->d1[i] = 2.0*(1-a2*c)/s;
+        filter->d2[i] = -(a2*c - 2.0*a*b + 1.0)/s;
+    }
+    filter->ep = 2.0/epsilon;  // used to normalize
+    
+    return filter;
 }
 CHEHighPass* create_che_high_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency){
 

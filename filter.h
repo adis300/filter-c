@@ -143,6 +143,9 @@ FTR_PRECISION bw_high_pass(BWHighPass* filter, FTR_PRECISION input);
 FTR_PRECISION bw_band_pass(BWBandPass* filter, FTR_PRECISION input);
 FTR_PRECISION bw_band_stop(BWBandStop* filter, FTR_PRECISION input);
 
+FTR_PRECISION che_low_pass(CHELowPass* filter, FTR_PRECISION input);
+
+
 FTR_PRECISION softmax(FTR_PRECISION* data, int size, int target_ind);
 
 // Output should be pre-allocated which has the same(or larger) size as the input.

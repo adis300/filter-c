@@ -192,8 +192,37 @@ CHELowPass* create_che_low_pass_filter(int n, FTR_PRECISION epsilon, FTR_PRECISI
     
     return filter;
 }
-CHEHighPass* create_che_high_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION half_power_frequency){
+CHEHighPass* create_che_high_pass_filter(int n, FTR_PRECISION epsilon, FTR_PRECISION s, FTR_PRECISION f){
+    CHEHighPass* filter = (CHELowPass *) malloc(sizeof(CHEHighPass));
+    filter -> m = n/2;
+    filter -> A = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
 
+    FTR_PRECISION a = tan(M_PI * f/ s);
+    FTR_PRECISION a2 = a * a;
+
+    FTR_PRECISION u = LOG((1.0+SQRT(1.0+epsilon*epsilon))/epsilon);
+    FTR_PRECISION su = SINH(u/(FTR_PRECISION)n);
+    FTR_PRECISION cu = COSH(u/(FTR_PRECISION)n);
+    FTR_PRECISION b,c;
+    
+    int i;
+    for(i=0; i<filter->m; ++i){
+        b = SIN(M_PI*(2.0*i+1.0)/(2.0*n))*su;
+        c = COS(M_PI*(2.0*i+1.0)/(2.0*n))*cu;
+        c = b*b + c*c;
+        s = a2 + 2.0*a*b + c;
+        filter->A[i] = 1.0/(4.0*s); // 4.0
+        filter->d1[i] = 2.0*(c-a2)/s;
+        filter->d2[i] = -(a2 - 2.0*a*b + c)/s;
+    }
+
+    filter->ep = 2.0/epsilon;  // used to normalize
+    return filter;
 }
 CHEBandPass* create_che_band_pass_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION lower_half_power_frequency, FTR_PRECISION upper_half_power_frequency){
 
@@ -258,7 +287,13 @@ void free_che_low_pass(CHELowPass* filter){
 }
 
 void free_che_high_pass(CHEHighPass* filter){
-
+    free(filter -> A);
+    free(filter -> d1);
+    free(filter -> d2);
+    free(filter -> w0);
+    free(filter -> w1);
+    free(filter -> w2);
+    free(filter);
 }
 void free_che_band_pass(CHEBandPass* filter){
 
@@ -317,6 +352,16 @@ FTR_PRECISION che_low_pass(CHELowPass* filter, FTR_PRECISION x){
     for(i=0; i<filter->m; ++i){
         filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
         x = filter->A[i]*(filter->w0[i] + 2.0*filter->w1[i] + filter->w2[i]);
+        filter->w2[i] = filter->w1[i];
+        filter->w1[i] = filter->w0[i];
+    }
+    return x * filter->ep;
+}
+FTR_PRECISION che_high_pass(CHELowPass* filter, FTR_PRECISION x){
+    int i;
+    for(i=0; i<filter->m; ++i){
+        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i] + x;
+        x = filter->A[i]*(filter->w0[i] - 2.0*filter->w1[i] + filter->w2[i]);
         filter->w2[i] = filter->w1[i];
         filter->w1[i] = filter->w0[i];
     }

@@ -262,8 +262,45 @@ CHEBandPass* create_che_band_pass_filter(int n, FTR_PRECISION epsilon, FTR_PRECI
     filter->ep = 2.0/epsilon;  // used to normalize
     return filter;
 }
-CHEBandStop* create_che_band_stop_filter(int order, FTR_PRECISION epsilon, FTR_PRECISION sampling_frequency, FTR_PRECISION lower_half_power_frequency, FTR_PRECISION upper_half_power_frequency){
-    
+
+CHEBandStop* create_che_band_stop_filter(int n, FTR_PRECISION epsilon, FTR_PRECISION s, FTR_PRECISION f_lower, FTR_PRECISION f_upper){
+    CHEBandStop* filter = (CHEBandStop *) malloc(sizeof(CHEBandStop));
+    filter -> m = n/4;
+    filter -> A = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d1 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d2 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d3 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> d4 = (FTR_PRECISION *)malloc(filter -> m*sizeof(FTR_PRECISION));
+    filter -> w0 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w1 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w2 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w3 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+    filter -> w4 = (FTR_PRECISION *)calloc(filter -> m, sizeof(FTR_PRECISION));
+
+    FTR_PRECISION a = COS(M_PI*(f_lower+f_upper)/s)/COS(M_PI*(f_upper-f_lower)/s);
+    FTR_PRECISION a2 = a*a;
+    FTR_PRECISION b = TAN(M_PI*(f_upper-f_lower)/s);
+    FTR_PRECISION b2 = b*b;
+    FTR_PRECISION u = LOG((1.0+SQRT(1.0+epsilon*epsilon))/epsilon);
+    FTR_PRECISION su = SINH(2.0*u/(FTR_PRECISION)n);
+    FTR_PRECISION cu = COSH(2.0*u/(FTR_PRECISION)n);
+    FTR_PRECISION r,c;
+    int i;
+    for(i=0; i < filter->m; ++i){
+        r = SIN(M_PI*(2.0*i+1.0)/n)*su;
+        c = COS(M_PI*(2.0*i+1.0)/n)*cu;
+        c = r*r + c*c;
+        s = b2 + 2.0*b*r + c;
+        filter->A[i] = 1.0/(4.0*s); // 4.0
+        filter->d1[i] = 4.0*a*(c+b*r)/s;
+        filter->d2[i] = 2.0*(b2-2.0*a2*c-c)/s;
+        filter->d3[i] = 4.0*a*(c-b*r)/s;
+        filter->d4[i] = -(b2 - 2.0*b*r + c)/s;
+    }
+    filter->r = 4.0*a;
+    filter->s = 4.0*a2+2.0;
+    filter->ep = 2.0/epsilon;  // used to normalize
+    return filter;
 }
 
 void free_bw_low_pass(BWLowPass* filter){
@@ -344,7 +381,17 @@ void free_che_band_pass(CHEBandPass* filter){
     free(filter);
 }
 void free_che_band_stop(CHEBandStop* filter){
-    
+    free(filter -> A);
+    free(filter -> d1);
+    free(filter -> d2);
+    free(filter -> d3);
+    free(filter -> d4);
+    free(filter -> w0);
+    free(filter -> w1);
+    free(filter -> w2);
+    free(filter -> w3);
+    free(filter -> w4);
+    free(filter);
 }
 
 FTR_PRECISION bw_low_pass(BWLowPass* filter, FTR_PRECISION x){

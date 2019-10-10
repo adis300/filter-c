@@ -473,6 +473,19 @@ FTR_PRECISION che_band_pass(CHEBandPass* filter, FTR_PRECISION x){
     return x * filter->ep;
 }
 
+FTR_PRECISION che_band_stop(CHEBandStop* filter, FTR_PRECISION x){
+    int i;
+    for(i=0; i<filter->m; ++i){
+        filter->w0[i] = filter->d1[i]*filter->w1[i] + filter->d2[i]*filter->w2[i]+ filter->d3[i]*filter->w3[i]+ filter->d4[i]*filter->w4[i] + x;
+        x = filter->A[i]*(filter->w0[i] - filter->r*filter->w1[i] + filter->s*filter->w2[i]- filter->r*filter->w3[i] + filter->w4[i]);
+        filter->w4[i] = filter->w3[i];
+        filter->w3[i] = filter->w2[i];
+        filter->w2[i] = filter->w1[i];
+        filter->w1[i] = filter->w0[i];
+    }
+    return x * filter->ep;
+}
+
 FTR_PRECISION softmax(FTR_PRECISION* data, int size, int target_ind){
     FTR_PRECISION sum = 0;
     for(int i = 0; i < size; i++) sum += data[i];

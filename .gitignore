@@ -1,6 +1,16 @@
 # Prerequisites
 *.d
 
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
 # Object files
 *.o
 *.ko
@@ -53,3 +63,5 @@ dkms.conf
 
 .vscode
 example
+
+

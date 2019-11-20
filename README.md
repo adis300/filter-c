@@ -10,6 +10,6 @@ make example
 ```
 
 ## Steps to use a filter,
-1. Create a filter object using `create_***_***_pass(params...)`
-2. Use filter to filter incoming numbers one by one. The output is a double or float that can be specified in header.
-3. After using the filter, release the filter using `free_***_***(filter)`.
+1. Create a filter object using `create_***_pass/stop(params...)`
+2. Use filter to filter incoming numbers one by one. The output is a double or float that can be specified in header. 
+3. After using the filter, release the filter using `free_***_pass/stop(filter)`.

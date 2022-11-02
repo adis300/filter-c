@@ -26,7 +26,7 @@ extern "C"{
 #else
 #define FTR_PRECISION float
 #if defined(_WIN32) || defined(__ZEPHYR__)
-#define M_PI 3.1415927
+#define M_PI 3.1415927f
 #endif
 #endif
 

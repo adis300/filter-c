@@ -16,8 +16,6 @@ extern "C"{
 
 #define DOUBLE_PRECISION 0
 
-
-
 #if DOUBLE_PRECISION
 #define FTR_PRECISION double
 #if defined(_WIN32) || defined(__ZEPHYR__)
